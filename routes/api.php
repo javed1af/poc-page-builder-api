@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Api\PublishedContentController;
+use App\Http\Controllers\Api\ContentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/published-contents', [PublishedContentController::class, 'store']);
-Route::get('/published-contents', [PublishedContentController::class, 'index']);
+Route::post('/contents', [ContentController::class, 'store']);
+Route::get('/contents', [ContentController::class, 'index']);
+Route::get('/contents/latest', [ContentController::class, 'latest']);
