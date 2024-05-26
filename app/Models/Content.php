@@ -9,7 +9,10 @@ class Content extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['data'];
+    protected $fillable = [
+        'page', 
+        'data'
+    ];
 
     protected $casts = [
         'data' => 'array',

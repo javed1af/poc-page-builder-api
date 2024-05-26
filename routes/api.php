@@ -21,5 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/contents', [ContentController::class, 'store']);
-Route::get('/contents', [ContentController::class, 'index']);
-Route::get('/contents/latest', [ContentController::class, 'latest']);
+Route::get('/contents/{page}', [ContentController::class, 'getContent']);
+Route::put('/contents/{page}', [ContentController::class, 'update']);

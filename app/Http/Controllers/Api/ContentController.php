@@ -11,30 +11,46 @@ class ContentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'content' => 'required|array',
+            'data' => 'required|json',
+            'page' => 'required|string|unique:contents,page',
         ]);
 
         $content = new Content();
-        $content->data = $request->content;
+        $content->page = $request->page;
+        $content->data = $request->data;
         $content->save();
 
         return response()->json(['message' => 'Content published successfully'], 201);
     }
 
-    public function index()
+    public function getContent($page)
     {
-        $contents = Content::all();
-        return response()->json($contents);
+        $content = Content::where('page', $page)->first();
+
+        if (!$content) {
+            $content = Content::create([
+                'page' => $page,
+                'data' => json_encode(['content' => [], 'root' => []]), // Default empty data structure
+            ]);
+        }
+
+        return response()->json($content);
     }
 
-    public function latest()
+    public function update(Request $request, $page)
     {
-        $content = Content::latest()->first();
+        $request->validate([
+            'data' => 'required|json',
+        ]);
 
-        $response = [
-            'data' => $content
-        ];
+        $content = Content::where('page', $page)->first();
+        if ($content) {
+            $content->data = $request->data;
+            $content->save();
 
-        return response()->json($response);
+            return response()->json(['message' => 'Content updated successfully']);
+        }
+
+        return response()->json(['message' => 'Content not found'], 404);
     }
 }
